@@ -5,18 +5,25 @@
 <title>Apertura popup webhook</title>
 <script>
 window.onload = function() {
+  
   // Prende eventuali parametri dall’URL (es. ID record)
   const params = new URLSearchParams(window.location.search);
   const id = params.get("record_id");
+  console.log("Parametro record_id:", id);
 
   // URL del tuo webhook n8n
   const webhookUrl = "https://637a803d4019.ngrok-free.app/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" + (id ? `?id=${id}` : "");
+  console.log("Chiamo webhook:", webhookUrl);
 
   // Apre il popup
   window.open(webhookUrl, 'popup', 'width=500,height=500');
+  console.log("Popup aperto:", popup);
 
   // Chiude la finestra/tab originale dopo mezzo secondo
-  setTimeout(() => window.close(), 500);
+  setTimeout(() => {
+    console.log("Chiusura pagina intermedia");
+    window.close();
+  }, 500);
 };
 </script>
 </head>
@@ -24,5 +31,6 @@ window.onload = function() {
 <p>Se la finestra non si chiude automaticamente, puoi farlo tu manualmente.</p>
 </body>
 </html>
+
 
 
