@@ -10,7 +10,7 @@ window.onload = function() {
   const id = params.get("id");
 
   // URL del tuo webhook n8n
-  const webhookUrl = "https://segreteriaendu.github.io/airtable-popup/open-webhook.html?id=" & RECORD_ID();
+  const webhookUrl = "http://localhost:5678/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" + (id ? `?id=${id}` : "");
 
   // Apre il popup
   window.open(webhookUrl, 'popup', 'width=500,height=500');
