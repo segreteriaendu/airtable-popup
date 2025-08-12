@@ -38,8 +38,8 @@ window.onload = function() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("record_id");
 
-  // URL pubblico del tuo webhook n8n (HTTPS)
-  webhookUrl = "https://n8n.rossettimauro.work/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" + (id ? `?id=${id}` : ""); 
+  // URL pubblico fisso del tuo webhook n8n su Cloudflare Tunnel
+  webhookUrl = "https://n8n.rossettimauro.work/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" 
                + (id ? `?id=${id}` : "");
   
   console.log("Webhook pronto:", webhookUrl);
@@ -67,4 +67,3 @@ function avviaWebhook() {
   </div>
 </body>
 </html>
-
