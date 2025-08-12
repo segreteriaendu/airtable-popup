@@ -1,69 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Avvio webhook</title>
+<title>Conferma invio operazione</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     text-align: center;
-    padding: 50px;
     background-color: #f9f9f9;
+    padding-top: 60px;
   }
-  .box {
+  .container {
     background: white;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 30px;
-    display: inline-block;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  h2 {
+    color: #333;
+  }
+  p {
+    color: #555;
+    margin-bottom: 30px;
   }
   button {
-    background-color: #00bcd4;
     border: none;
-    color: white;
-    padding: 12px 20px;
+    padding: 12px 24px;
     font-size: 16px;
     cursor: pointer;
     border-radius: 6px;
-    margin-top: 20px;
+    margin: 5px;
+    min-width: 120px;
+    transition: background-color 0.3s ease;
   }
-  button:hover {
+  .confirm {
+    background-color: #00bcd4;
+    color: white;
+  }
+  .confirm:hover {
     background-color: #009fb1;
+  }
+  .cancel {
+    background-color: #ccc;
+    color: #333;
+  }
+  .cancel:hover {
+    background-color: #aaa;
   }
 </style>
 <script>
-let webhookUrl = "";
+let recordId = "";
 
 window.onload = function() {
   const params = new URLSearchParams(window.location.search);
-  const id = params.get("record_id");
-
-  // URL pubblico fisso del tuo webhook n8n su Cloudflare Tunnel
-  webhookUrl = "https://n8n.rossettimauro.work/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" 
-               + (id ? `?id=${id}` : "");
-  
-  console.log("Webhook pronto:", webhookUrl);
+  recordId = params.get("record_id") || "";
 };
 
-function avviaWebhook() {
-  console.log("Apro popup webhook:", webhookUrl);
-  const popup = window.open(webhookUrl, 'popup', 'width=500,height=500');
-  if (!popup) {
-    alert("⚠️ Il browser ha bloccato il popup. Sbloccalo per continuare.");
-    return;
-  }
-  setTimeout(() => {
-    window.close();
-  }, 500);
+function confermaOperazione() {
+  // URL del webhook n8n - sostituisci con il tuo
+  const webhookUrl = "https://n8n.rossettimauro.work/webhook/6a1d18a6-947f-4138-b758-17f463d219c8"
+                    + (recordId ? `?id=${recordId}` : "");
+
+  console.log("Invio richiesta a:", webhookUrl);
+
+  fetch(webhookUrl, { method: "POST" })
+    .then(response => {
+      console.log("Risposta webhook:", response.status);
+      window.close();
+      // Se window.close() non funziona (tab aperta da Airtable), fai redirect
+      setTimeout(() => {
+        window.location.href = "https://segreteriaendu.github.io/airtable-popup/operazione-completata.html";
+      }, 300);
+    })
+    .catch(error => {
+      console.error("Errore nel chiamare il webhook:", error);
+      alert("Si è verificato un errore. Riprova.");
+    });
+}
+
+function annullaOperazione() {
+  window.close();
 }
 </script>
 </head>
 <body>
-  <div class="box">
-    <h2>⚠️ Attenzione</h2>
-    <p>Questa pagina invia una mail ai destinatari scelti.</p>
-    <p>Premi il pulsante qui sotto per procedere.</p>
-    <button onclick="avviaWebhook()">📤 Invia ora</button>
+  <div class="container">
+    <h2>Conferma invio</h2>
+    <p>Questa operazione invierà una mail ai destinatari selezionati.<br>
+       Sei sicuro di voler procedere?</p>
+    <button class="confirm" onclick="confermaOperazione()">📤 Conferma</button>
+    <button class="cancel" onclick="annullaOperazione()">❌ Annulla</button>
   </div>
 </body>
 </html>
