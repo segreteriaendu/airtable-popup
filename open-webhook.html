@@ -2,35 +2,68 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Apertura popup webhook</title>
+<title>Avvio webhook</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+    background-color: #f9f9f9;
+  }
+  .box {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    display: inline-block;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  button {
+    background-color: #00bcd4;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 20px;
+  }
+  button:hover {
+    background-color: #009fb1;
+  }
+</style>
 <script>
+let webhookUrl = "";
+
 window.onload = function() {
-  
-  // Prende eventuali parametri dall’URL (es. ID record)
   const params = new URLSearchParams(window.location.search);
   const id = params.get("record_id");
-  console.log("Parametro record_id:", id);
 
-  // URL del tuo webhook n8n
-  const webhookUrl = "https://637a803d4019.ngrok-free.app/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" + (id ? `?id=${id}` : "");
-  console.log("Chiamo webhook:", webhookUrl);
+  // URL pubblico del tuo webhook n8n (HTTPS)
+  webhookUrl = "https://637a803d4019.ngrok-free.app/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" 
+               + (id ? `?id=${id}` : "");
+  
+  console.log("Webhook pronto:", webhookUrl);
+};
 
-  // Apre il popup
-  window.open(webhookUrl, 'popup', 'width=500,height=500');
-  console.log("Popup aperto:", popup);
-
-  // Chiude la finestra/tab originale dopo mezzo secondo
+function avviaWebhook() {
+  console.log("Apro popup webhook:", webhookUrl);
+  const popup = window.open(webhookUrl, 'popup', 'width=500,height=500');
+  if (!popup) {
+    alert("⚠️ Il browser ha bloccato il popup. Sbloccalo per continuare.");
+    return;
+  }
   setTimeout(() => {
-    console.log("Chiusura pagina intermedia");
     window.close();
   }, 500);
-};
+}
 </script>
 </head>
 <body>
-<p>Se la finestra non si chiude automaticamente, puoi farlo tu manualmente.</p>
+  <div class="box">
+    <h2>⚠️ Attenzione</h2>
+    <p>Questa pagina invia una mail ai destinatari scelti.</p>
+    <p>Premi il pulsante qui sotto per procedere.</p>
+    <button onclick="avviaWebhook()">📤 Invia ora</button>
+  </div>
 </body>
 </html>
-
-
-
