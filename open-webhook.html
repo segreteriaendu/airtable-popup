@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Apertura popup webhook</title>
+<script>
+window.onload = function() {
+  // Prende eventuali parametri dall’URL (es. ID record)
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  // URL del tuo webhook n8n
+  const webhookUrl = "https://tuo-webhook.com" + (id ? `?id=${id}` : "");
+
+  // Apre il popup
+  window.open(webhookUrl, 'popup', 'width=500,height=500');
+
+  // Chiude la finestra/tab originale dopo mezzo secondo
+  setTimeout(() => window.close(), 500);
+};
+</script>
+</head>
+<body>
+<p>Se la finestra non si chiude automaticamente, puoi farlo tu manualmente.</p>
+</body>
+</html>
