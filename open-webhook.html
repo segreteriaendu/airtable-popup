@@ -59,25 +59,23 @@ window.onload = function() {
 };
 
 function confermaOperazione() {
-  // URL del webhook n8n - sostituisci con il tuo
+  // URL pubblico del webhook n8n
   const webhookUrl = "https://n8n.rossettimauro.work/webhook/6a1d18a6-947f-4138-b758-17f463d219c8"
                     + (recordId ? `?id=${recordId}` : "");
 
-  console.log("Invio richiesta a:", webhookUrl);
+  console.log("Apro popup con:", webhookUrl);
 
-  fetch(webhookUrl, { method: "POST" })
-    .then(response => {
-      console.log("Risposta webhook:", response.status);
-      window.close();
-      // Se window.close() non funziona (tab aperta da Airtable), fai redirect
-      setTimeout(() => {
-        window.location.href = "https://segreteriaendu.github.io/airtable-popup/operazione-completata.html";
-      }, 300);
-    })
-    .catch(error => {
-      console.error("Errore nel chiamare il webhook:", error);
-      alert("Si è verificato un errore. Riprova.");
-    });
+  const popup = window.open(webhookUrl, 'popup', 'width=500,height=500');
+
+  if (!popup) {
+    alert("⚠️ Il browser ha bloccato il popup. Sbloccalo per continuare.");
+    return;
+  }
+
+  // Chiude la pagina originale dopo 2 secondi
+  setTimeout(() => {
+    window.close();
+  }, 2000);
 }
 
 function annullaOperazione() {
@@ -87,7 +85,7 @@ function annullaOperazione() {
 </head>
 <body>
   <div class="container">
-    <h2>Conferma invio</h2>
+    <h2>⚠️ Attenzione</h2>
     <p>Questa operazione invierà una mail ai destinatari selezionati.<br>
        Sei sicuro di voler procedere?</p>
     <button class="confirm" onclick="confermaOperazione()">📤 Conferma</button>
