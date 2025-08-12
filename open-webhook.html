@@ -10,7 +10,7 @@ window.onload = function() {
   const id = params.get("record_id");
 
   // URL del tuo webhook n8n
-  const webhookUrl = "http://localhost:5678/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" + (id ? `?id=${id}` : "");
+  const webhookUrl = "https://637a803d4019.ngrok-free.app/webhook/6a1d18a6-947f-4138-b758-17f463d219c8" + (id ? `?id=${id}` : "");
 
   // Apre il popup
   window.open(webhookUrl, 'popup', 'width=500,height=500');
@@ -24,4 +24,5 @@ window.onload = function() {
 <p>Se la finestra non si chiude automaticamente, puoi farlo tu manualmente.</p>
 </body>
 </html>
+
 
